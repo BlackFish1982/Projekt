@@ -1,0 +1,7 @@
+
+*.xml
+out/production/Projekt/.gitattributes
+out/production/Projekt/app/Main.class
+out/production/Projekt/app/Policjant.class
+*.class
+*.iml

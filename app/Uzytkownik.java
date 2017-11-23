@@ -1,24 +1,32 @@
 package app;
 
 public class Uzytkownik {
-    String imie;
-    String nazwisko;
-    String pesel;
-    boolean jestKierowca = false;
-    int punktyKarne = 0;
+    private String imie;
+    private String nazwisko;
+    private String pesel;
+    private boolean jestKierowca = false;
+    private int punktyKarne = 0;
     
 
-    public Uzytkownik(String i, String n, String p){ //konstruktor
-        imie = i;
-        nazwisko = n;
-        pesel = p;
+    public Uzytkownik(String i, String n, String p){
+        this.imie = i;
+        this.nazwisko = n;
+        this.pesel = p;
     }
     
     public boolean getJestKierowca(){ 
-        return jestKierowca;
+        return this.jestKierowca;
     }
     public void setJestKierowca(boolean jk){ 
         this.jestKierowca = jk;
+    }
+
+    public void zmienIloscPunktow(int pktKarne){
+        this.punktyKarne += pktKarne;
+    }
+
+    public void kasujPunkty(int pktKarne){
+        this.punktyKarne = pktKarne;
     }
     
     public Boolean sprawdzPesel(String pesel){
@@ -28,8 +36,11 @@ public class Uzytkownik {
         }
         return false;
     }
+    public int getPunktyKarne(){
+        return this.punktyKarne;
+    }
     
-    public String toString(){ //funkcja przedefiniowana przez programistę
+    public String toString(){
         String wynik = "Uzytkownik: \nImie: " + this.imie + "\nNazwisko: " + this.nazwisko + "\nPesel: " 
                 + this.pesel + "\nCzy jest kierowca: " + this.jestKierowca + "\nPunkty: "
                 + this.punktyKarne + "\n";
