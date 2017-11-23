@@ -19,6 +19,7 @@ public class Policjant {
 
     public Boolean sprawdzUprawnienia(){
         return this.uprawnienia;
+        
     }
 
     public String toString(){
