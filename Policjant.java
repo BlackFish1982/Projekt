@@ -1,23 +1,28 @@
 package app;
-import static java.lang.System.out;
 
 public class Policjant {
+    private String identyfikator;
+    private Boolean uprawnienia;
     
-    public Policjant(String nazwa){ //konstruktor
-        String identyfikator = nazwa;
-    }
-    
-    //    id kierowcy, punkty, okres
-    public static void dodajPunkty(){
-    }
-    
-    public void ukaraj_kierowce(Uzytkownik uk, int punkty){
-        
-        if(uk.jestKierowca == true){
-            uk.punktyKarne += punkty;
-            out.println("\nPunkty dodane!\n");
+    public Policjant(String identyfikator){
+        this.identyfikator = identyfikator;
+        if (identyfikator.isEmpty()){
+            this.uprawnienia = false;
         }else{
-            out.println("\nNie mozna dodac punktow, bo nie jest kierowca!\n");
+            this.uprawnienia = true;
         }
+    }
+
+    public String getIdentyfikator(){
+        return this.identyfikator;
+    }
+
+    public Boolean sprawdzUprawnienia(){
+        return this.uprawnienia;
+    }
+
+    public String toString(){
+        String wynik = "Policjant: \nIdentyfikator: " + this.identyfikator + "\nUprawnienia: " + this.uprawnienia + "\n";
+        return wynik;
     }
 }
