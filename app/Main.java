@@ -1,11 +1,11 @@
 package app;
-import java.lang.System;
 
 import static java.lang.System.out;
 
 public class Main {
     public static void main(String[] args) {
 
+//        Tworzymy użytkowników
         Uzytkownik u1 = new Uzytkownik("Jan", "Czerwony", "3912391299");
         Uzytkownik u2 = new Uzytkownik("Piotr", "Zółty", "9458795882");
         Uzytkownik u3 = new Uzytkownik("Stefan", "Biały", "5345435645");
@@ -15,14 +15,14 @@ public class Main {
         SystemEwidencji glownySystemEwidencji = new SystemEwidencji();
         
 //        Dodajemy uzytkownikow do systemu
-        glownySystemEwidencji.dodajKierowce(u1);
-        glownySystemEwidencji.dodajKierowce(u2);
-        glownySystemEwidencji.dodajKierowce(u3);
-        glownySystemEwidencji.dodajKierowce(u4);
+        glownySystemEwidencji.dodajUzytkownika(u1);
+        glownySystemEwidencji.dodajUzytkownika(u2);
+        glownySystemEwidencji.dodajUzytkownika(u3);
+        glownySystemEwidencji.dodajUzytkownika(u4);
 
 
-//        wyswietlamy
-        glownySystemEwidencji.wyswietlWszystkichKierowcow();
+//        wyswietlamy wszystkich użytkowników w systemie
+        glownySystemEwidencji.wyswietlWszystkichUzytkownikow();
 
 //        zmieniamy status na kierowce
         u1.setJestKierowca(true);
@@ -30,19 +30,25 @@ public class Main {
         u3.setJestKierowca(true);
         u4.setJestKierowca(true);
 
+//        sprawdzamy czy użytkownik "u2" jest kierowcą
+        u2.getJestKierowca();
+
+//        sprawdzamy punkty uzytkownika "u1"
         glownySystemEwidencji.sprawdzPunkty(u1);
 
-
-//        dodajemy policjanta
+//        tworzymy policjanta
         Policjant p1 = new Policjant("Policjant 1");
-        
-//        policjant daje punkty
-        glownySystemEwidencji.dodajPunkty(p1, "5345435645", 5);
 
-        out.println(u3);
+//        policjant "p1" daje punkty uzytkownikowi "u2"
+        glownySystemEwidencji.dodajPunkty(p1, u2, 5);
 
-        glownySystemEwidencji.kasujPunkty(p1,"5345435645");
+//        wyswietlamy na ekran uzytkownika "u2" poprzez wyszukanie go po peselu
+        glownySystemEwidencji.wyszukajUzytkownika("9458795882");
 
-        out.println(u3);
+//        kasujemy poprzez system punkty uzytkownikowi "u2", bierze w tym udział policjant "p1"
+        glownySystemEwidencji.kasujPunkty(p1, u2);
+
+//        wyswietlamy na ekran uzytkownika "u2"
+        out.println(u2);
     }
 }
