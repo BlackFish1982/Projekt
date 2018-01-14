@@ -2,6 +2,8 @@ package app;
 
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -39,6 +41,8 @@ public class Main extends Application {
     final HBox hb = new HBox();
 
     public static void main(String[] args) {
+//        Wypełniamy wstępnymi danymi:
+
         //        Tworzymy użytkowników
         Uzytkownik u1 = new Uzytkownik("Jan", "Czerwony", 391239129);
         Uzytkownik u2 = new Uzytkownik("Piotr", "Zółty", 945879588);
@@ -59,31 +63,20 @@ public class Main extends Application {
 //        glownySystemEwidencji.dodajUzytkownika(u3);
         glownySystemEwidencji.dodajUzytkownika(k4);
 
-////        wyswietlamy wszystkich użytkowników w systemie
-//        glownySystemEwidencji.wyswietlWszystkichUzytkownikow();
-//
-////        sprawdzamy czy użytkownik "u2" jest kierowcą
-//        k2.getJestKierowca();
-//
-////        sprawdzamy punkty uzytkownika "u1"
-//        glownySystemEwidencji.sprawdzPunkty(k1);
-//
-////        tworzymy policjanta
-//        Policjant p1 = new Policjant("Policjant 1");
-//
-////        policjant "p1" daje punkty uzytkownikowi "u2"
-//        glownySystemEwidencji.dodajPunkty(p1, k2, 5);
-//
-////        wyswietlamy na ekran uzytkownika "u2" poprzez wyszukanie go po peselu
-//        glownySystemEwidencji.wyszukajUzytkownika("9458795882");
-//
-////        kasujemy poprzez system punkty uzytkownikowi "u2", bierze w tym udział policjant "p1"
-//        glownySystemEwidencji.kasujPunkty(p1, k2);
-//
-////        wyswietlamy na ekran uzytkownika "u2"
-//        out.println(u2);
 
         launch(args);
+    }
+
+    public static void addTextLimiter(final TextField tf, final int maxLength) {
+        tf.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
+                if (tf.getText().length() > maxLength) {
+                    String s = tf.getText().substring(0, maxLength);
+                    tf.setText(s);
+                }
+            }
+        });
     }
 
     @Override
@@ -127,7 +120,7 @@ public class Main extends Application {
 
 
         TableColumn punktyCol = new TableColumn("Punkty Karne");
-        punktyCol.setMinWidth(200);
+        punktyCol.setMinWidth(100);
         punktyCol.setCellValueFactory(
                 new PropertyValueFactory<Kierowca, Integer>("punktyKarne"));
         punktyCol.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
@@ -143,19 +136,27 @@ public class Main extends Application {
         );
 
         table.getColumns().addAll(imieCol, nazwiskoCol, peselCol, punktyCol);
-//        TableView<Kierowca> table1 = table;
-
         table.setItems(data);
 
         final TextField dodajImie = new TextField();
         dodajImie.setPromptText("Imie");
-        dodajImie.setMaxWidth(imieCol.getPrefWidth());
         final TextField dodajNazwisko = new TextField();
-        dodajNazwisko.setMaxWidth(nazwiskoCol.getPrefWidth());
         dodajNazwisko.setPromptText("Nazwisko");
         final TextField dodajPesel = new TextField();
-        dodajPesel.setMaxWidth(peselCol.getPrefWidth());
         dodajPesel.setPromptText("Pesel");
+
+        // force the field to be numeric only
+        dodajPesel.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    dodajPesel.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
+
+        addTextLimiter(dodajPesel, 9);
 
         final Button addButton = new Button("Dodaj");
         addButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -176,13 +177,20 @@ public class Main extends Application {
 
         final TextField wyszukajPesel = new TextField();
         wyszukajPesel.setPromptText("wpisz pesel");
-        wyszukajPesel.setMaxWidth(imieCol.getPrefWidth());
 
-        Label imieLabel = new Label("");
-        Label nazwiskoLabel = new Label("");
-        Label peselLabel = new Label("");
-        Label punktyKarneLabel = new Label("");
+        wyszukajPesel.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    wyszukajPesel.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
 
+        addTextLimiter(wyszukajPesel, 9);
+
+        Label searchResultLabel = new Label("");
 
         final Button searchButton = new Button("Szukaj");
         searchButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -190,12 +198,9 @@ public class Main extends Application {
             public void handle(ActionEvent e) {
                 Kierowca wyszukanyKierowca = glownySystemEwidencji.wyszukajKierowce(Integer.parseInt(wyszukajPesel.getText()));
                 if (wyszukanyKierowca != null) {
-                    imieLabel.setText(wyszukanyKierowca.getImie());
-                    nazwiskoLabel.setText(wyszukanyKierowca.getNazwisko());
-                    peselLabel.setText(Integer.toString(wyszukanyKierowca.getPesel()));
-                    punktyKarneLabel.setText(Integer.toString(wyszukanyKierowca.getPunktyKarne()));
+                    searchResultLabel.setText(wyszukanyKierowca.toString());
                 } else {
-                    imieLabel.setText("brak kierowców o podanym peselu");
+                    searchResultLabel.setText("brak kierowców o podanym peselu");
                 }
                 wyszukajPesel.clear();
             }
@@ -204,7 +209,7 @@ public class Main extends Application {
         hb1.getChildren().addAll(wyszukajPesel, searchButton);
         hb1.setSpacing(3);
 
-        hb2.getChildren().addAll(imieLabel, nazwiskoLabel, peselLabel, punktyKarneLabel);
+        hb2.getChildren().addAll(searchResultLabel);
         hb2.setSpacing(3);
 
         final VBox vbox1 = new VBox();
