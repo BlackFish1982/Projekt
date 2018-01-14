@@ -33,14 +33,17 @@ public class Main extends Application {
     private TableView<Kierowca> table = new TableView<>();
     private final ObservableList<Kierowca> data =
             FXCollections.observableArrayList(glownySystemEwidencji.getListaKierowcow());
+    final HBox hb1 = new HBox();
+    final HBox hb2 = new HBox();
+
     final HBox hb = new HBox();
 
     public static void main(String[] args) {
         //        Tworzymy użytkowników
-        Uzytkownik u1 = new Uzytkownik("Jan", "Czerwony", "3912391299");
-        Uzytkownik u2 = new Uzytkownik("Piotr", "Zółty", "9458795882");
-        Uzytkownik u3 = new Uzytkownik("Stefan", "Biały", "5345435645");
-        Uzytkownik u4 = new Uzytkownik("Andrzej", "Niebieski", "53453453545");
+        Uzytkownik u1 = new Uzytkownik("Jan", "Czerwony", 391239129);
+        Uzytkownik u2 = new Uzytkownik("Piotr", "Zółty", 945879588);
+        Uzytkownik u3 = new Uzytkownik("Stefan", "Biały", 534543564);
+        Uzytkownik u4 = new Uzytkownik("Andrzej", "Niebieski", 534534535);
 
 //        Tworzymy system
 
@@ -87,19 +90,22 @@ public class Main extends Application {
     public void start(Stage stage) {
         TabPane layout = new TabPane();
 
-        Tab uzytkownikTab = new Tab("Uzytkownik");
-        layout.getTabs().add(uzytkownikTab);
-
-        Tab policjantTab = new Tab("Policjant");
-        layout.getTabs().add(policjantTab);
-
         Scene scene = new Scene(layout);
         stage.setTitle("System Ewidencji");
         stage.setWidth(650);
         stage.setHeight(550);
 
-        final Label label = new Label("System dla Policjanta");
-        label.setFont(new Font("Arial", 20));
+        Tab uzytkownikTab = new Tab("Uzytkownik");
+        layout.getTabs().add(uzytkownikTab);
+
+        final Label label1 = new Label("System dla Użytkownika");
+        label1.setFont(new Font("Arial", 20));
+
+        Tab policjantTab = new Tab("Policjant");
+        layout.getTabs().add(policjantTab);
+
+        final Label label2 = new Label("System dla Policjanta");
+        label2.setFont(new Font("Arial", 20));
 
         table.setEditable(true);
 
@@ -136,8 +142,10 @@ public class Main extends Application {
                 }
         );
 
-        table.setItems(data);
         table.getColumns().addAll(imieCol, nazwiskoCol, peselCol, punktyCol);
+//        TableView<Kierowca> table1 = table;
+
+        table.setItems(data);
 
         final TextField dodajImie = new TextField();
         dodajImie.setPromptText("Imie");
@@ -156,7 +164,7 @@ public class Main extends Application {
                 data.add(new Kierowca(
                         dodajImie.getText(),
                         dodajNazwisko.getText(),
-                        dodajPesel.getText()));
+                        Integer.parseInt(dodajPesel.getText())));
                 dodajImie.clear();
                 dodajNazwisko.clear();
                 dodajPesel.clear();
@@ -166,13 +174,52 @@ public class Main extends Application {
         hb.getChildren().addAll(dodajImie, dodajNazwisko, dodajPesel, addButton);
         hb.setSpacing(3);
 
-        final VBox vbox = new VBox();
-        vbox.setSpacing(5);
-        vbox.setPadding(new Insets(10, 0, 0, 10));
-        vbox.getChildren().addAll(label, table, hb);
+        final TextField wyszukajPesel = new TextField();
+        wyszukajPesel.setPromptText("wpisz pesel");
+        wyszukajPesel.setMaxWidth(imieCol.getPrefWidth());
 
-        policjantTab.setContent(vbox);
-//        policjantTab.setContent((Group) scene.getRoot()).getChildren().addAll(vbox));
+        Label imieLabel = new Label("");
+        Label nazwiskoLabel = new Label("");
+        Label peselLabel = new Label("");
+        Label punktyKarneLabel = new Label("");
+
+
+        final Button searchButton = new Button("Szukaj");
+        searchButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                Kierowca wyszukanyKierowca = glownySystemEwidencji.wyszukajKierowce(Integer.parseInt(wyszukajPesel.getText()));
+                if (wyszukanyKierowca != null) {
+                    imieLabel.setText(wyszukanyKierowca.getImie());
+                    nazwiskoLabel.setText(wyszukanyKierowca.getNazwisko());
+                    peselLabel.setText(Integer.toString(wyszukanyKierowca.getPesel()));
+                    punktyKarneLabel.setText(Integer.toString(wyszukanyKierowca.getPunktyKarne()));
+                } else {
+                    imieLabel.setText("brak kierowców o podanym peselu");
+                }
+                wyszukajPesel.clear();
+            }
+        });
+
+        hb1.getChildren().addAll(wyszukajPesel, searchButton);
+        hb1.setSpacing(3);
+
+        hb2.getChildren().addAll(imieLabel, nazwiskoLabel, peselLabel, punktyKarneLabel);
+        hb2.setSpacing(3);
+
+        final VBox vbox1 = new VBox();
+        vbox1.setSpacing(5);
+        vbox1.setPadding(new Insets(10, 0, 0, 10));
+        vbox1.getChildren().addAll(label1, table, hb1, hb2);
+
+        uzytkownikTab.setContent(vbox1);
+
+        final VBox vbox2 = new VBox();
+        vbox2.setSpacing(5);
+        vbox2.setPadding(new Insets(10, 0, 0, 10));
+        vbox2.getChildren().addAll(label2, table, hb);
+
+        policjantTab.setContent(vbox2);
 
         stage.setScene(scene);
         stage.show();

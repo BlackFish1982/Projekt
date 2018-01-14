@@ -4,7 +4,7 @@ public class Kierowca extends Uzytkownik {
     private boolean jestKierowca;
     private int punktyKarne = 0;
 
-    public Kierowca(String imie, String nazwisko, String pesel) {
+    public Kierowca(String imie, String nazwisko, int pesel) {
         super(imie, nazwisko, pesel);
 
         this.jestKierowca = true;

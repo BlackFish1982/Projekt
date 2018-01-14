@@ -4,17 +4,17 @@ public class Uzytkownik {
     // zmienne klasy użytkownik
     private String imie;
     private String nazwisko;
-    private String pesel;
+    private int pesel;
 
     //    konstruktor podstawowy
     public Uzytkownik() {
         this.imie = "";
         this.nazwisko = "";
-        this.pesel = "";
+        this.pesel = 0;
     }
 
     //konstruktor który pobiera imie, nazwisko, pesel
-    public Uzytkownik(String i, String n, String p){
+    public Uzytkownik(String i, String n, int p) {
         // i przypisuje je do zmiennych klasowych
         this.imie = i;
         this.nazwisko = n;
@@ -40,17 +40,17 @@ public class Uzytkownik {
     }
 
     // metoda która zwraca nam informacje o peselu
-    public String getPesel() {
+    public int getPesel() {
         return this.pesel;
     }
 
-    public String setPesel(String p) {
+    public int setPesel(int p) {
         return this.pesel = p;
     }
 
     // metoda która sprawdza pesel poprzez przyrównanie peselu, który został przekazany jako argument metody do peselu
     // który ma aktualny użytkownik (this) i zwraca prawde lub fałsz zależnie czy pasuje czy nie
-    public Boolean sprawdzPesel(String pesel){
+    public Boolean sprawdzPesel(int pesel) {
         if (this.pesel == pesel)
         {
             return true;

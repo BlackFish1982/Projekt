@@ -37,7 +37,7 @@ public class SystemEwidencji {
     }
 
     // metoda typu Boolean ktora zwraca prawde lub falsz, argumenty: pesel
-    public Boolean wyszukajKierowce(String pesel)
+    public Kierowca wyszukajKierowce(int pesel)
     {
         out.println("Zaczynam wyszukiwać kierowce po peselu!\n");
         // pętla ograniczona rozmiarem listy użytkowników
@@ -52,12 +52,12 @@ public class SystemEwidencji {
                 out.println("Kierowca znaleziony!\n");
                 out.println(pasujacyKierowcaDoPeselu);
                 // i przerywam pętle po znalezieniu żeby dalej nie szukałą poprzez zwrocenie prawdy ze znalezlismy kierowca
-                return true;
+                return pasujacyKierowcaDoPeselu;
             }
         }
         // wyświetlamy odpowednią wiadomość jeżeli nie ma użytkowników o takim peselu
         out.println("Brak kierowców o podanym peselu w bazie ewidencji!\n");
-        return false;
+        return null;
     }
 
     // argumenty metody: Policjant, Kierowca, liczba punktów
