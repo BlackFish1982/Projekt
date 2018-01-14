@@ -1,54 +1,180 @@
 package app;
 
+import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
+
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.converter.IntegerStringConverter;
+
 import static java.lang.System.out;
 
-public class Main {
-    public static void main(String[] args) {
+public class Main extends Application {
+    private static SystemEwidencji glownySystemEwidencji = new SystemEwidencji();
 
-//        Tworzymy użytkowników
+    private TableView<Kierowca> table = new TableView<>();
+    private final ObservableList<Kierowca> data =
+            FXCollections.observableArrayList(glownySystemEwidencji.getListaKierowcow());
+    final HBox hb = new HBox();
+
+    public static void main(String[] args) {
+        //        Tworzymy użytkowników
         Uzytkownik u1 = new Uzytkownik("Jan", "Czerwony", "3912391299");
         Uzytkownik u2 = new Uzytkownik("Piotr", "Zółty", "9458795882");
         Uzytkownik u3 = new Uzytkownik("Stefan", "Biały", "5345435645");
         Uzytkownik u4 = new Uzytkownik("Andrzej", "Niebieski", "53453453545");
 
 //        Tworzymy system
-        SystemEwidencji glownySystemEwidencji = new SystemEwidencji();
-        
-//        Dodajemy uzytkownikow do systemu
-        glownySystemEwidencji.dodajUzytkownika(u1);
-        glownySystemEwidencji.dodajUzytkownika(u2);
-        glownySystemEwidencji.dodajUzytkownika(u3);
-        glownySystemEwidencji.dodajUzytkownika(u4);
-
-
-//        wyswietlamy wszystkich użytkowników w systemie
-        glownySystemEwidencji.wyswietlWszystkichUzytkownikow();
 
 //        zmieniamy status na kierowce
-        u1.setJestKierowca(true);
-        u2.setJestKierowca(true);
-        u3.setJestKierowca(true);
-        u4.setJestKierowca(true);
+        Kierowca k1 = new Kierowca(u1, true, 0);
+        Kierowca k2 = new Kierowca(u2, true, 0);
+//        Kierowca k3 = new Kierowca(u3, true, 0);
+        Kierowca k4 = new Kierowca(u4, true, 0);
 
-//        sprawdzamy czy użytkownik "u2" jest kierowcą
-        u2.getJestKierowca();
+        //        Dodajemy uzytkownikow do systemu
+        glownySystemEwidencji.dodajUzytkownika(k1);
+        glownySystemEwidencji.dodajUzytkownika(k2);
+//        glownySystemEwidencji.dodajUzytkownika(u3);
+        glownySystemEwidencji.dodajUzytkownika(k4);
 
-//        sprawdzamy punkty uzytkownika "u1"
-        glownySystemEwidencji.sprawdzPunkty(u1);
+////        wyswietlamy wszystkich użytkowników w systemie
+//        glownySystemEwidencji.wyswietlWszystkichUzytkownikow();
+//
+////        sprawdzamy czy użytkownik "u2" jest kierowcą
+//        k2.getJestKierowca();
+//
+////        sprawdzamy punkty uzytkownika "u1"
+//        glownySystemEwidencji.sprawdzPunkty(k1);
+//
+////        tworzymy policjanta
+//        Policjant p1 = new Policjant("Policjant 1");
+//
+////        policjant "p1" daje punkty uzytkownikowi "u2"
+//        glownySystemEwidencji.dodajPunkty(p1, k2, 5);
+//
+////        wyswietlamy na ekran uzytkownika "u2" poprzez wyszukanie go po peselu
+//        glownySystemEwidencji.wyszukajUzytkownika("9458795882");
+//
+////        kasujemy poprzez system punkty uzytkownikowi "u2", bierze w tym udział policjant "p1"
+//        glownySystemEwidencji.kasujPunkty(p1, k2);
+//
+////        wyswietlamy na ekran uzytkownika "u2"
+//        out.println(u2);
 
-//        tworzymy policjanta
-        Policjant p1 = new Policjant("Policjant 1");
+        launch(args);
+    }
 
-//        policjant "p1" daje punkty uzytkownikowi "u2"
-        glownySystemEwidencji.dodajPunkty(p1, u2, 5);
+    @Override
+    public void start(Stage stage) {
+        TabPane layout = new TabPane();
 
-//        wyswietlamy na ekran uzytkownika "u2" poprzez wyszukanie go po peselu
-        glownySystemEwidencji.wyszukajUzytkownika("9458795882");
+        Tab uzytkownikTab = new Tab("Uzytkownik");
+        layout.getTabs().add(uzytkownikTab);
 
-//        kasujemy poprzez system punkty uzytkownikowi "u2", bierze w tym udział policjant "p1"
-        glownySystemEwidencji.kasujPunkty(p1, u2);
+        Tab policjantTab = new Tab("Policjant");
+        layout.getTabs().add(policjantTab);
 
-//        wyswietlamy na ekran uzytkownika "u2"
-        out.println(u2);
+        Scene scene = new Scene(layout);
+        stage.setTitle("System Ewidencji");
+        stage.setWidth(650);
+        stage.setHeight(550);
+
+        final Label label = new Label("System dla Policjanta");
+        label.setFont(new Font("Arial", 20));
+
+        table.setEditable(true);
+
+        TableColumn imieCol = new TableColumn("Imie");
+        imieCol.setMinWidth(100);
+        imieCol.setCellValueFactory(
+                new PropertyValueFactory<Kierowca, String>("imie"));
+
+        TableColumn nazwiskoCol = new TableColumn("Nazwisko");
+        nazwiskoCol.setMinWidth(100);
+        nazwiskoCol.setCellValueFactory(
+                new PropertyValueFactory<Kierowca, String>("nazwisko"));
+        imieCol.setCellFactory(TextFieldTableCell.forTableColumn());
+
+        TableColumn peselCol = new TableColumn("Pesel");
+        peselCol.setMinWidth(200);
+        peselCol.setCellValueFactory(
+                new PropertyValueFactory<Kierowca, String>("pesel"));
+
+
+        TableColumn punktyCol = new TableColumn("Punkty Karne");
+        punktyCol.setMinWidth(200);
+        punktyCol.setCellValueFactory(
+                new PropertyValueFactory<Kierowca, Integer>("punktyKarne"));
+        punktyCol.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        punktyCol.setOnEditCommit(
+                new EventHandler<CellEditEvent<Kierowca, Integer>>() {
+                    @Override
+                    public void handle(CellEditEvent<Kierowca, Integer> t) {
+                        ((Kierowca) t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())
+                        ).dodajPunkty(t.getNewValue());
+                    }
+                }
+        );
+
+        table.setItems(data);
+        table.getColumns().addAll(imieCol, nazwiskoCol, peselCol, punktyCol);
+
+        final TextField dodajImie = new TextField();
+        dodajImie.setPromptText("Imie");
+        dodajImie.setMaxWidth(imieCol.getPrefWidth());
+        final TextField dodajNazwisko = new TextField();
+        dodajNazwisko.setMaxWidth(nazwiskoCol.getPrefWidth());
+        dodajNazwisko.setPromptText("Nazwisko");
+        final TextField dodajPesel = new TextField();
+        dodajPesel.setMaxWidth(peselCol.getPrefWidth());
+        dodajPesel.setPromptText("Pesel");
+
+        final Button addButton = new Button("Dodaj");
+        addButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                data.add(new Kierowca(
+                        dodajImie.getText(),
+                        dodajNazwisko.getText(),
+                        dodajPesel.getText()));
+                dodajImie.clear();
+                dodajNazwisko.clear();
+                dodajPesel.clear();
+            }
+        });
+
+        hb.getChildren().addAll(dodajImie, dodajNazwisko, dodajPesel, addButton);
+        hb.setSpacing(3);
+
+        final VBox vbox = new VBox();
+        vbox.setSpacing(5);
+        vbox.setPadding(new Insets(10, 0, 0, 10));
+        vbox.getChildren().addAll(label, table, hb);
+
+        policjantTab.setContent(vbox);
+//        policjantTab.setContent((Group) scene.getRoot()).getChildren().addAll(vbox));
+
+        stage.setScene(scene);
+        stage.show();
     }
 }
