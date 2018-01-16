@@ -4,20 +4,22 @@ import java.util.List;
 import static java.lang.System.out;
 
 public class SystemEwidencji {
-    // prywatna zmienna typu "LISTA", która przechowywuje w sobie obiekty typu: "Kierowca"
+    // prywatna zmienna typu "LISTA", która przechowywuje w sobie obiekty typu: "Kierowca", nie przechowujemy
+    // w systemie uzytkownikow, poniewaz jest to system ewidencji kierowcow
     private List<Kierowca> listaKierowcow;
 
-    // konstruktor
+//    KONSTRUKTOR
     public SystemEwidencji(){
         // tworzymy nowy obiekt typu "LISTA" i przypisujemy go do naszej zmiennej klasowej
         this.listaKierowcow = new ArrayList<Kierowca>();
     }
 
+//    METODA GET dla listy kierowcow
     public List<Kierowca> getListaKierowcow() {
         return listaKierowcow;
     }
 
-    // argumenty metody: Użytkownik
+    // dodajemy uzytkownika do systemu - od razu staje sie on kierowca
     public void dodajUzytkownika(Uzytkownik uzytkownikDoDodania) {
         // do naszej zmiennej klasowej, czyli LISTY dodajemy użytkownika
         this.listaKierowcow.add(new Kierowca(uzytkownikDoDodania));

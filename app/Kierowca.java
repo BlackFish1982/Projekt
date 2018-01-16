@@ -4,6 +4,7 @@ public class Kierowca extends Uzytkownik {
     private boolean jestKierowca;
     private int punktyKarne = 0;
 
+//    KONSTRUKTORY
     public Kierowca(String imie, String nazwisko, int pesel) {
         super(imie, nazwisko, pesel);
 
@@ -25,30 +26,29 @@ public class Kierowca extends Uzytkownik {
         this.punktyKarne = pkt;
     }
 
+//    METODY GET
     // metoda która zwraca nam informacje o tym czy uzytkownik jest kierowca (prawda lub fałsz)
     public boolean getJestKierowca() {
         return this.jestKierowca;
-    }
-
-    // metoda która ustawia nam fakt czy użytkownik jest kierowcą (prawda lub fałsz)
-    public void setJestKierowca(boolean jestKierowca) {
-        this.jestKierowca = jestKierowca;
-    }
-
-    // metoda która dodaje nam punkty karne do punktów karnych użytkownika
-    public void dodajPunkty(int pktKarne) {
-        this.punktyKarne += pktKarne;
-    }
-
-    // metoda która kasuje punkty karne użytkownika czyli ustawia zero
-    public void kasujPunkty() {
-        this.punktyKarne = 0;
     }
 
     // metoda która zwraca nam aktualną ilość punktów karnych użytkownika
     public int getPunktyKarne() {
         return this.punktyKarne;
     }
+
+//    METODY SET
+    // metoda która ustawia nam fakt czy użytkownik jest kierowcą (prawda lub fałsz)
+    public void setJestKierowca(boolean jestKierowca) {
+        this.jestKierowca = jestKierowca;
+    }
+
+//    INNE METODY
+    // Zarzadza punktami - ustalamy wartosc samemu, czyli podajemy ile punktow
+    public void zarzadzajPunktami(int pktKarne) {
+    this.punktyKarne = pktKarne;
+}
+
 
     // metoda, która zwraca nam reprezentacje tekstową naszej klasy
     public String toString() {

@@ -11,8 +11,10 @@ public class Policjant {
     public Policjant(String identyfikator){
         // przypisujemy go do zmiennej klasowej
         this.identyfikator = identyfikator;
-        // ustawiamy uprawnienia na prawdę
-        this.uprawnienia = true;
+        // ustawiamy uprawnienia na prawdę, jezeli istnieje identyfikator
+        if (this.identyfikator != null){
+            this.uprawnienia = true;
+        }
     }
 
     // metoda która zwraca identyfikator
@@ -20,7 +22,7 @@ public class Policjant {
         return this.identyfikator;
     }
 
-    // metoda która zwraca nam uprawnienia (prawda lub fałsz)
+    // metoda która sprawdza nam uprawnienia (prawda lub fałsz)
     public Boolean sprawdzUprawnienia(){
         return this.uprawnienia;
     }
