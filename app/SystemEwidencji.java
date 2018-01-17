@@ -11,7 +11,7 @@ public class SystemEwidencji {
     private List<Kierowca> listaKierowcow;
 
     //    KONSTRUKTOR
-    public SystemEwidencji(){
+    public SystemEwidencji() {
         // tworzymy nowy obiekt typu "LISTA" i przypisujemy go do naszej zmiennej klasowej
         this.listaKierowcow = new ArrayList<Kierowca>();
     }
@@ -42,8 +42,7 @@ public class SystemEwidencji {
 
     // metoda typu Kierowca, ktora zwraca nam kierowce do ktorego pasuje podany numer pesel,
 //    bedziemy jej uzywac do wyszukiwania kierowcy po numerze pesel
-    public Kierowca wyszukajKierowce(int pesel)
-    {
+    public Kierowca wyszukajKierowce(int pesel) {
         System.out.println("Zaczynam wyszukiwać kierowce po peselu!\n");
         // pętla ograniczona rozmiarem listy użytkowników
         for (int i = 0; i < this.listaKierowcow.size(); i++) {
