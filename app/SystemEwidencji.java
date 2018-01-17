@@ -2,8 +2,8 @@ package app;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.System;
 
-import static java.lang.System;
 
 public class SystemEwidencji {
     // prywatna zmienna typu "LISTA", która przechowywuje w sobie obiekty typu: "Kierowca", nie przechowujemy
@@ -25,18 +25,18 @@ public class SystemEwidencji {
     public void dodajUzytkownika(Uzytkownik uzytkownikDoDodania) {
         // do naszej zmiennej klasowej, czyli LISTY dodajemy użytkownika
         this.listaKierowcow.add(new Kierowca(uzytkownikDoDodania));
-        out.println("Kierowca dodany!\n");
+        System.out.println("Kierowca dodany!\n");
     }
 
     public void wyswietlWszystkichKierowcow() {
         // wypisujemy informacje
-        out.println("Lista kierowców w systemie:\n");
+        System.out.println("Lista kierowców w systemie:\n");
 
         // pętla ograniczona rozmiarem listy kierowców
         for (int i = 0; i < this.listaKierowcow.size(); i++) {
             // z listy użytkowników pobieramy metodą "get" użytkownika, który ma indeks "i" i metodą toString zamieniamy
             // na reprezentacje tekstową do wypisania na ekran
-            out.println(this.listaKierowcow.get(i).toString());
+            System.out.println(this.listaKierowcow.get(i).toString());
         }
     }
 
@@ -44,24 +44,24 @@ public class SystemEwidencji {
 //    bedziemy jej uzywac do wyszukiwania kierowcy po numerze pesel
     public Kierowca wyszukajKierowce(int pesel)
     {
-        out.println("Zaczynam wyszukiwać kierowce po peselu!\n");
+        System.out.println("Zaczynam wyszukiwać kierowce po peselu!\n");
         // pętla ograniczona rozmiarem listy użytkowników
         for (int i = 0; i < this.listaKierowcow.size(); i++) {
             // z listy kierowców pobieramy metodą "get" użytkownika, który ma indeks "i" i przypisujemy do zmiennej
             // pasujacyUzytkownikDoPeselu
             Kierowca pasujacyKierowcaDoPeselu = this.listaKierowcow.get(i);
             // wywołujemy metodę na kierowcy do sprawdzenia czy pesel się zgadza z wyszukiwanym peselem
-            if (pasujacyKierowcaDoPeselu.sprawdzPesel(pesel)) {
+            if (pasujacyKierowcaDoPeselu.getPesel() == pesel) {
                 // jeżeli się zgadza to:
                 // wypisujemy go
-                out.println("Kierowca znaleziony!\n");
-                out.println(pasujacyKierowcaDoPeselu);
+                System.out.println("Kierowca znaleziony!\n");
+                System.out.println(pasujacyKierowcaDoPeselu);
                 // i przerywam pętle po znalezieniu żeby dalej nie szukałą poprzez zwrocenie prawdy ze znalezlismy kierowca
                 return pasujacyKierowcaDoPeselu;
             }
         }
         // wyświetlamy odpowednią wiadomość jeżeli nie ma użytkowników o takim peselu
-        out.println("Brak kierowców o podanym peselu w bazie ewidencji!\n");
+        System.out.println("Brak kierowców o podanym peselu w bazie ewidencji!\n");
         return null;
     }
 
@@ -71,8 +71,8 @@ public class SystemEwidencji {
         if (aktualnyPolicjant.sprawdzUprawnienia()) {
             // jeżeli tak to:
             // dodajemy punkty metodą "dodajPunkty" do Kierowcy
-            kierowcaDoUkarania.dodajPunkty(liczbaPunktow);
-            out.println("Punkty zostały dodane!\n");
+            kierowcaDoUkarania.zarzadzajPunktami(liczbaPunktow, aktualnyPolicjant.sprawdzUprawnienia());
+            System.out.println("Punkty zostały dodane!\n");
         }
     }
 
@@ -81,7 +81,7 @@ public class SystemEwidencji {
         // na użytkowniku wywołujemy metodą do pobrania ilości punktów karnych i przypisujemy do zmiennej "liczbaPunktowKierowcy"
         int liczbaPunktowKierowcy = aktualnyKierowca.getPunktyKarne();
         // wypisujemy liczbę punktów
-        out.println("Liczba punktów: " + liczbaPunktowKierowcy + "\n");
+        System.out.println("Liczba punktów: " + liczbaPunktowKierowcy + "\n");
     }
 
     // argumenty metody: Policjant, Kierowca
@@ -89,12 +89,9 @@ public class SystemEwidencji {
         // sprawdzamy czy policjant ma uprawnienia
         if (karajacyPolicjant.sprawdzUprawnienia()) {
             // na Kierowcy wywołujemy metodę do kasowania punktów
-            kierowcaDoSkasowaniaPunktow.kasujPunkty();
+            kierowcaDoSkasowaniaPunktow.zarzadzajPunktami(0, karajacyPolicjant.sprawdzUprawnienia());
             // wypisujemy informacje
-            out.println("Punkty zostały usunięte!\n");
+            System.out.println("Punkty zostały usunięte!\n");
         }
     }
-}
-
-
 }

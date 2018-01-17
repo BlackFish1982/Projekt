@@ -31,6 +31,7 @@ import static java.lang.System.out;
 
 public class Main extends Application {
     private static SystemEwidencji glownySystemEwidencji = new SystemEwidencji();
+    Policjant p1 = new Policjant("h546gh45g64");
 
     private TableView<Kierowca> table = new TableView<>();
     private final ObservableList<Kierowca> data =
@@ -56,6 +57,8 @@ public class Main extends Application {
         Kierowca k2 = new Kierowca(u2, true, 0);
 //        Kierowca k3 = new Kierowca(u3, true, 0);
         Kierowca k4 = new Kierowca(u4, true, 0);
+
+        Policjant p1 = new Policjant("h546gh45g64");
 
         //        Dodajemy uzytkownikow do systemu
         glownySystemEwidencji.dodajUzytkownika(k1);
@@ -130,7 +133,7 @@ public class Main extends Application {
                     public void handle(CellEditEvent<Kierowca, Integer> t) {
                         ((Kierowca) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())
-                        ).dodajPunkty(t.getNewValue());
+                        ).zarzadzajPunktami(t.getNewValue(), p1.sprawdzUprawnienia());
                     }
                 }
         );
