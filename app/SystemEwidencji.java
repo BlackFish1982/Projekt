@@ -1,20 +1,22 @@
 package app;
+
 import java.util.ArrayList;
 import java.util.List;
-import static java.lang.System.out;
+
+import static java.lang.System;
 
 public class SystemEwidencji {
     // prywatna zmienna typu "LISTA", która przechowywuje w sobie obiekty typu: "Kierowca", nie przechowujemy
     // w systemie uzytkownikow, poniewaz jest to system ewidencji kierowcow
     private List<Kierowca> listaKierowcow;
 
-//    KONSTRUKTOR
+    //    KONSTRUKTOR
     public SystemEwidencji(){
         // tworzymy nowy obiekt typu "LISTA" i przypisujemy go do naszej zmiennej klasowej
         this.listaKierowcow = new ArrayList<Kierowca>();
     }
 
-//    METODA GET dla listy kierowcow
+    //    METODA GET dla listy kierowcow
     public List<Kierowca> getListaKierowcow() {
         return listaKierowcow;
     }
@@ -38,7 +40,8 @@ public class SystemEwidencji {
         }
     }
 
-    // metoda typu Boolean ktora zwraca prawde lub falsz, argumenty: pesel
+    // metoda typu Kierowca, ktora zwraca nam kierowce do ktorego pasuje podany numer pesel,
+//    bedziemy jej uzywac do wyszukiwania kierowcy po numerze pesel
     public Kierowca wyszukajKierowce(int pesel)
     {
         out.println("Zaczynam wyszukiwać kierowce po peselu!\n");
@@ -93,3 +96,5 @@ public class SystemEwidencji {
     }
 }
 
+
+}

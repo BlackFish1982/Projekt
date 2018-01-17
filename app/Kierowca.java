@@ -32,23 +32,25 @@ public class Kierowca extends Uzytkownik {
         return this.jestKierowca;
     }
 
-    // metoda która zwraca nam aktualną ilość punktów karnych użytkownika
-    public int getPunktyKarne() {
-        return this.punktyKarne;
-    }
-
 //    METODY SET
     // metoda która ustawia nam fakt czy użytkownik jest kierowcą (prawda lub fałsz)
     public void setJestKierowca(boolean jestKierowca) {
         this.jestKierowca = jestKierowca;
     }
 
+    // metoda która zwraca nam aktualną ilość punktów karnych użytkownika
+    public int getPunktyKarne() {
+        return this.punktyKarne;
+    }
+
 //    INNE METODY
     // Zarzadza punktami - ustalamy wartosc samemu, czyli podajemy ile punktow
-    public void zarzadzajPunktami(int pktKarne) {
-    this.punktyKarne = pktKarne;
-}
-
+//    potrzebny jest informacja z systemu na temat weryfikacji uprawnien (policjanta)
+    public void zarzadzajPunktami(int pktKarne, boolean weryfikacjaUprawnien) {
+        if (weryfikacjaUprawnien == true){
+            this.punktyKarne = pktKarne;
+        }
+    }
 
     // metoda, która zwraca nam reprezentacje tekstową naszej klasy
     public String toString() {
