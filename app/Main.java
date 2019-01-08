@@ -34,7 +34,7 @@ import java.util.ArrayList;
 
 import static java.lang.System.out;
 
-public class Main extends Application {
+public class Main {
 
 //    Tworzymy system
     private static SystemEwidencji glownySystemEwidencji = new SystemEwidencji();
@@ -75,7 +75,7 @@ public class Main extends Application {
     }
 
     private static void pokazOknoGlowne(String[] args){
-        OknoGlowne okno = new OknoGlowne(true);
+        OknoGlowne okno = new OknoGlowne();
         okno.go(args);
     }
 
@@ -89,20 +89,10 @@ public class Main extends Application {
 //        logDial.go(false);
 //    }
 
-    @Override
-    public void start(Stage stage) {
-//        TabPane layout = new TabPane();
-//
-//        Scene scene = new Scene(layout);
-//
-//        stage.setScene(scene);
-//        stage.show();
-    }
-
     public static void main(String[] args) {
         ustawWstepneDaneSystemu();
-//        out.println(pokazOknoLoginu(args));
+        pokazOknoLoginu(args);
+        pokazOknoGlowne(args);
 
-//        launch(args);
     }
 }

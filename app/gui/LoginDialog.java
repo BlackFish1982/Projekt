@@ -17,9 +17,9 @@ import java.util.Optional;
 
 public class LoginDialog {
 
-    public void otworz(){
-        OknoGlowne okno = new OknoGlowne(false);
-
+    private static void pokazOknoGlowne(String[] args){
+        OknoGlowne okno = new OknoGlowne();
+        okno.go(args);
     }
 
     public void go(boolean wersjaSystemuDlaPolicjanta){
@@ -73,10 +73,10 @@ public class LoginDialog {
 
         Optional<Pair<String, String>> result = dialog.showAndWait();
 
-
         result.ifPresent(dane -> {
-//            System.out.println(dane.getKey() + ", " + wersjaTekstuLambda + "=" + dane.getValue());
+            System.out.println(dane.getKey() + ", " + wersjaTekstuLambda + "=" + dane.getValue());
         });
+
 
 //        return result.getValue();
     }

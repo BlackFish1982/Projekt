@@ -24,10 +24,6 @@ public class OknoGlowne extends Application{
     private TableView<Kierowca> table = new TableView<>();
     private boolean uprawnienia = false;
 
-    public OknoGlowne(boolean uprawnienia){
-        this.uprawnienia = uprawnienia;
-    }
-
     @Override
     public void start(Stage stage) throws Exception {
 
@@ -79,16 +75,16 @@ public class OknoGlowne extends Application{
         punktyCol.setCellValueFactory(
                 new PropertyValueFactory<Kierowca, Integer>("punktyKarne"));
         punktyCol.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
-        punktyCol.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<Kierowca, Integer>>() {
-                    @Override
-                    public void handle(TableColumn.CellEditEvent<Kierowca, Integer> t) {
-                        ((Kierowca) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).zarzadzajPunktami(t.getNewValue(), p1.sprawdzUprawnienia());
-                    }
-                }
-        );
+//        punktyCol.setOnEditCommit(
+//                new EventHandler<TableColumn.CellEditEvent<Kierowca, Integer>>() {
+//                    @Override
+//                    public void handle(TableColumn.CellEditEvent<Kierowca, Integer> t) {
+//                        ((Kierowca) t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).zarzadzajPunktami(t.getNewValue(), p1.sprawdzUprawnienia());
+//                    }
+//                }
+//        );
 
         table.getColumns().addAll(imieCol, nazwiskoCol, peselCol, punktyCol);
 
@@ -111,18 +107,18 @@ public class OknoGlowne extends Application{
         });
 
         final Button addButton = new Button("Dodaj");
-        addButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                data.add(new Kierowca(
-                        dodajImie.getText(),
-                        dodajNazwisko.getText(),
-                        Integer.parseInt(dodajPesel.getText())));
-                dodajImie.clear();
-                dodajNazwisko.clear();
-                dodajPesel.clear();
-            }
-        });
+//        addButton.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent e) {
+//                data.add(new Kierowca(
+//                        dodajImie.getText(),
+//                        dodajNazwisko.getText(),
+//                        Integer.parseInt(dodajPesel.getText())));
+//                dodajImie.clear();
+//                dodajNazwisko.clear();
+//                dodajPesel.clear();
+//            }
+//        });
 
         hb.getChildren().addAll(dodajImie, dodajNazwisko, dodajPesel, addButton);
         hb.setSpacing(3);
@@ -164,6 +160,10 @@ public class OknoGlowne extends Application{
         vbox2.getChildren().addAll(label2, table, hb);
 
         policjantTab.setContent(vbox2);
+
+        stage.setScene(scene);
+
+        stage.show();
     }
 
     private void ustawDane(ObservableList<Kierowca> data){
