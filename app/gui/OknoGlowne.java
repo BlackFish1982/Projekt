@@ -34,7 +34,8 @@ public class OknoGlowne extends Application{
     private static boolean uprawnienia = false;
     private Optional<Pair<String, String>> result;
     private DaneWejsciowe daneAplikacji = new DaneWejsciowe();
-    private ObservableList<Kierowca> data = daneAplikacji.ustawWstepneDaneSystemu();
+
+    private ObservableList<Kierowca> data = FXCollections.observableArrayList(daneAplikacji.ustawWstepneDaneSystemu());
 
     @Override
     public void start(Stage glowneOkno) throws Exception {

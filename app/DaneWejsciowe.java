@@ -1,14 +1,12 @@
 package app;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import java.util.List;
 
 public class DaneWejsciowe {
 
     //    Tworzymy system
     private static SystemEwidencji glownySystemEwidencji = new SystemEwidencji();
 
-    public ObservableList<Kierowca> ustawWstepneDaneSystemu() {
+    public List<Kierowca> ustawWstepneDaneSystemu() {
         //        Wypełniamy wstępnymi danymi:
 
         //        Tworzymy użytkowników
@@ -33,6 +31,6 @@ public class DaneWejsciowe {
 //        glownySystemEwidencji.dodajUzytkownika(u3);
         glownySystemEwidencji.dodajUzytkownika(k4);
 
-        return FXCollections.observableArrayList(glownySystemEwidencji.getListaKierowcow());
+        return glownySystemEwidencji.getListaKierowcow();
     }
 }
