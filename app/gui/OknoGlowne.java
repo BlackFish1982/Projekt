@@ -1,49 +1,111 @@
 package app.gui;
 
+import app.DaneWejsciowe;
 import app.Kierowca;
 import app.Policjant;
 import app.SystemEwidencji;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import javafx.util.converter.IntegerStringConverter;
 
+import java.util.Optional;
+
 public class OknoGlowne extends Application{
+//    private TableView table = new TableView();
+
     private TableView<Kierowca> table = new TableView<>();
-    private boolean uprawnienia = false;
+    private static boolean uprawnienia = false;
+    private Optional<Pair<String, String>> result;
+    private DaneWejsciowe daneAplikacji = new DaneWejsciowe();
+    private ObservableList<Kierowca> data = daneAplikacji.ustawWstepneDaneSystemu();
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage glowneOkno) throws Exception {
 
-        final HBox hb1 = new HBox();
-        final HBox hb2 = new HBox();
+//         okno wyboru typu loginu = policjant czy uzytkownik
+        final Stage wersjaLoginuOkno = new Stage();
+        HBox ukladHoryzontalnyBox = new HBox();
+        ukladHoryzontalnyBox.setPadding(new Insets(10));
+        ukladHoryzontalnyBox.setSpacing(10);
+        ukladHoryzontalnyBox.setAlignment(Pos.CENTER);
+
+        Button uzytkownikButton = new Button("Uzytkownik");
+        Button policjantButton = new Button("Policjant");
+
+        ukladHoryzontalnyBox.getChildren().addAll(uzytkownikButton, policjantButton);
+
+        Scene secondaryScene = new Scene(ukladHoryzontalnyBox, 300, 50);
+        wersjaLoginuOkno.setTitle("Wybierz wersje:");
+        wersjaLoginuOkno.setScene(secondaryScene);
+
+        wersjaLoginuOkno.show();
+
+//        Tworzymy samo okno logowania zaleznie od wybranej wersji
+        LoginDialog dialogLogowania = new LoginDialog();
+
+        uzytkownikButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                wersjaLoginuOkno.close();
+                result = dialogLogowania.go(true);
+            }
+        });
+
+        policjantButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                wersjaLoginuOkno.close();
+                result = dialogLogowania.go(true);
+                if (result.isPresent()) {
+                    pokazOknoGlowne(result.get().getKey(), result.get().getValue());
+                    System.out.println("test");
+                }
+            }
+        });
+//        koniec okna wyboru typu loginu
+    }
+
+    private void pokazOknoGlowne(String wersja, String identyfikacja){
+        if (wersja.equals("Identyfikator")){
+
+        }else{
+
+        }
+        Stage glowneOkno = new Stage();
+        final HBox ukladWyszukiwaniaHoryzontalnyBox = new HBox();
+        final HBox ukladWynikuWyszukiwaniaHoryzontalnyBox = new HBox();
 
         final HBox hb = new HBox();
 
         TabPane layout = new TabPane();
 
         Scene scene = new Scene(layout);
-        stage.setTitle("System Ewidencji");
-        stage.setWidth(650);
-        stage.setHeight(550);
+        glowneOkno.setTitle("System Ewidencji");
+        glowneOkno.setWidth(650);
+        glowneOkno.setHeight(550);
 
         Tab uzytkownikTab = new Tab("Uzytkownik");
         layout.getTabs().add(uzytkownikTab);
 
-        final Label label1 = new Label("System dla Użytkownika");
-        label1.setFont(new Font("Arial", 20));
+        final Label etykietaWersji = new Label("System dla Użytkownika");
+        etykietaWersji.setFont(new Font("Arial", 20));
 
         Tab policjantTab = new Tab("Policjant");
         layout.getTabs().add(policjantTab);
@@ -136,23 +198,23 @@ public class OknoGlowne extends Application{
             }
         });
 
-        Label searchResultLabel = new Label("");
+        Label wynikWyszukiwaniaEtykieta = new Label("");
 
         final Button searchButton = new Button("Szukaj");
 
 
-        hb1.getChildren().addAll(wyszukajPesel, searchButton);
-        hb1.setSpacing(3);
+        ukladWyszukiwaniaHoryzontalnyBox.getChildren().addAll(wyszukajPesel, searchButton);
+        ukladWyszukiwaniaHoryzontalnyBox.setSpacing(3);
 
-        hb2.getChildren().addAll(searchResultLabel);
-        hb2.setSpacing(3);
+        ukladWynikuWyszukiwaniaHoryzontalnyBox.getChildren().addAll(wynikWyszukiwaniaEtykieta);
+        ukladWynikuWyszukiwaniaHoryzontalnyBox.setSpacing(3);
 
-        final VBox vbox1 = new VBox();
-        vbox1.setSpacing(5);
-        vbox1.setPadding(new Insets(10, 0, 0, 10));
-        vbox1.getChildren().addAll(label1, table, hb1, hb2);
+        final VBox ukladWertykalnyCalegoOkna = new VBox();
+        ukladWertykalnyCalegoOkna.setSpacing(5);
+        ukladWertykalnyCalegoOkna.setPadding(new Insets(10, 0, 0, 10));
+        ukladWertykalnyCalegoOkna.getChildren().addAll(etykietaWersji, table, ukladWyszukiwaniaHoryzontalnyBox, ukladWynikuWyszukiwaniaHoryzontalnyBox);
 
-        uzytkownikTab.setContent(vbox1);
+        uzytkownikTab.setContent(ukladWertykalnyCalegoOkna);
 
         final VBox vbox2 = new VBox();
         vbox2.setSpacing(5);
@@ -161,9 +223,20 @@ public class OknoGlowne extends Application{
 
         policjantTab.setContent(vbox2);
 
-        stage.setScene(scene);
+        glowneOkno.setScene(scene);
 
-        stage.show();
+        glowneOkno.show();
+
+    }
+
+    private void pokazOknoLogowaniaPolicjanta() {
+        LoginDialog logDial = new LoginDialog();
+        logDial.go(true);
+    }
+
+    private void pokazOknoLogowaniaUzytkownika() {
+        LoginDialog logDial = new LoginDialog();
+        logDial.go(false);
     }
 
     private void ustawDane(ObservableList<Kierowca> data){
@@ -171,8 +244,4 @@ public class OknoGlowne extends Application{
     }
 
     private  void wyszukaj(){}
-
-    public void go(String args[]){
-        launch(args);
-    }
 }
