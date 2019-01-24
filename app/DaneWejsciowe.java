@@ -30,7 +30,21 @@ public class DaneWejsciowe {
         glownySystemEwidencji.dodajUzytkownika(k2);
 //        glownySystemEwidencji.dodajUzytkownika(u3);
         glownySystemEwidencji.dodajUzytkownika(k4);
+        glownySystemEwidencji.dodajPolicjanta(p1);
 
         return glownySystemEwidencji.getListaKierowcow();
+    }
+
+    public Policjant pobierzPolicjanta(String identyfikator){
+        return glownySystemEwidencji.pobierzPolicjanta(identyfikator);
+    }
+
+    public String pobierzDaneKierowcy(int pesel){
+        Kierowca wyszukanyKierowca = glownySystemEwidencji.wyszukajKierowce(pesel);
+        if (wyszukanyKierowca == null){
+            return null;
+        }else{
+            return glownySystemEwidencji.wyszukajKierowce(pesel).toString();
+        }
     }
 }

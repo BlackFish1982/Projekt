@@ -9,11 +9,13 @@ public class SystemEwidencji {
     // prywatna zmienna typu "LISTA", która przechowywuje w sobie obiekty typu: "Kierowca", nie przechowujemy
     // w systemie uzytkownikow, poniewaz jest to system ewidencji kierowcow
     private List<Kierowca> listaKierowcow;
+    private List<Policjant> listaPolicjantow;
 
     //    KONSTRUKTOR
     public SystemEwidencji() {
         // tworzymy nowy obiekt typu "LISTA" i przypisujemy go do naszej zmiennej klasowej
         this.listaKierowcow = new ArrayList<Kierowca>();
+        this.listaPolicjantow = new ArrayList<Policjant>();
     }
 
     //    METODA GET dla listy kierowcow
@@ -26,6 +28,29 @@ public class SystemEwidencji {
         // do naszej zmiennej klasowej, czyli LISTY dodajemy użytkownika
         this.listaKierowcow.add(new Kierowca(uzytkownikDoDodania));
         System.out.println("Kierowca dodany!\n");
+    }
+
+    // dodajemy policjanta do systemu
+    public void dodajPolicjanta(Policjant policjantDoDodania) {
+        // do naszej zmiennej klasowej, czyli LISTY dodajemy policjanta
+        this.listaPolicjantow.add(policjantDoDodania);
+        System.out.println("Policjant dodany!\n");
+    }
+
+    public Policjant pobierzPolicjanta(String identyfikatorPolicjanta){
+        // pętla ograniczona rozmiarem listy policjantow
+        for (int i = 0; i < this.listaPolicjantow.size(); i++) {
+            // z listy policjantow pobieramy metodą "get" użytkownika, który ma indeks "i" i przypisujemy do zmiennej
+            // policjant
+            Policjant policjant = this.listaPolicjantow.get(i);
+            // wywołujemy metodę na policjancie do sprawdzenia czy identyfikator się zgadza z wyszukiwanym identyfikatorem
+            if (policjant.getIdentyfikator().equals(identyfikatorPolicjanta)) {
+                // jeżeli się zgadza to:
+                // przerywam pętle po znalezieniu żeby dalej nie szukałą poprzez zwrocenie danego policjanta
+                return policjant;
+            }
+        }
+        return null;
     }
 
     public void wyswietlWszystkichKierowcow() {

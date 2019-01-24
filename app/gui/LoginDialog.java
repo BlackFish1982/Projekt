@@ -1,21 +1,14 @@
 package app.gui;
 
-import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.util.Optional;
 
 public class LoginDialog {
+    private Dialog<Pair<String, String>> dialog = new Dialog<>();
 
     public Optional<Pair<String, String>> go(boolean wersjaSystemuDlaPolicjanta){
         String wersjaTekstu = "Pesel";
@@ -23,7 +16,7 @@ public class LoginDialog {
             wersjaTekstu = "Identyfikator";
         }
         // Create the custom dialog.
-        Dialog<Pair<String, String>> dialog = new Dialog<>();
+//        Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Logowanie do systemu:");
         dialog.setHeaderText("Proszę podaj dane:");
 
@@ -44,16 +37,17 @@ public class LoginDialog {
         TextField textField = new TextField();
         textField.setPromptText("wpisz " + wersjaTekstu.toLowerCase());
         Restrykcje.restrykcjaPoprawnosci(dialog, loginButtonType, textField);
-        Restrykcje.restrykcjaTypu(textField);
-        Restrykcje.restrykcjaDlugosci(textField, 9);
+        if (!wersjaSystemuDlaPolicjanta){
+            Restrykcje.restrykcjaTypu(textField);
+            Restrykcje.restrykcjaDlugosci(textField, 9);
+        }else{
+            Restrykcje.restrykcjaDlugosci(textField, 11);
+        }
 
         grid.add(new Label(wersjaTekstu + ":"), 0, 0);
         grid.add(textField, 1, 0);
 
         dialog.getDialogPane().setContent(grid);
-
-// Request focus on the username field by default.
-//        Platform.runLater(() -> textField.requestFocus());
 
 // Kopiujemy zmienna zeby mozna bylo jej uzyc w funkcji lambda
         final String wersjaTekstuLambda = wersjaTekstu;
@@ -72,6 +66,5 @@ public class LoginDialog {
             System.out.println(dane.getKey() + ", " + wersjaTekstuLambda + "=" + dane.getValue());
         });
         return result;
-
     }
 }

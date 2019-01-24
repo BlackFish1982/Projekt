@@ -54,8 +54,8 @@ public class Kierowca extends Uzytkownik {
 
     // metoda, która zwraca nam reprezentacje tekstową naszej klasy
     public String toString() {
-        String wynik = "Uzytkownik: \nImie: " + this.getImie() + "\nNazwisko: " + this.getNazwisko() + "\nPesel: "
-                + this.getPesel() + "\nCzy jest kierowca: " + this.jestKierowca + "\nPunkty: "
+        String wynik = "Kierowca: \nImie: " + this.getImie() + "\nNazwisko: " + this.getNazwisko() + "\nPesel: "
+                + this.getPesel() + "\nPunkty: "
                 + this.punktyKarne + "\n";
         return wynik;
     }
