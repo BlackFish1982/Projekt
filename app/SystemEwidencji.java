@@ -6,28 +6,28 @@ import java.lang.System;
 
 
 public class SystemEwidencji {
-    // prywatna zmienna typu "LISTA", która przechowywuje w sobie obiekty typu: "Kierowca", nie przechowujemy
-    // w systemie uzytkownikow, poniewaz jest to system ewidencji kierowcow
-    private List<Kierowca> listaKierowcow;
+    // prywatna zmienna typu "LISTA", która przechowywuje w sobie obiekty typu: "KierowcaUkarany", nie przechowujemy
+    // lista policjantow w systemie ewidencji aby dodawac punktu ukaranym
+    private List<KierowcaUkarany> listaKierowcow;
     private List<Policjant> listaPolicjantow;
 
     //    KONSTRUKTOR
     public SystemEwidencji() {
-        // tworzymy nowy obiekt typu "LISTA" i przypisujemy go do naszej zmiennej klasowej
-        this.listaKierowcow = new ArrayList<Kierowca>();
+        // tworzymy nowy obiekt typu "LISTA" i przypisujemy pokazOkno do naszej zmiennej klasowej
+        this.listaKierowcow = new ArrayList<KierowcaUkarany>();
         this.listaPolicjantow = new ArrayList<Policjant>();
     }
 
     //    METODA GET dla listy kierowcow
-    public List<Kierowca> getListaKierowcow() {
+    public List<KierowcaUkarany> getListaKierowcow() {
         return listaKierowcow;
     }
 
-    // dodajemy uzytkownika do systemu - od razu staje sie on kierowca
-    public void dodajUzytkownika(Uzytkownik uzytkownikDoDodania) {
-        // do naszej zmiennej klasowej, czyli LISTY dodajemy użytkownika
-        this.listaKierowcow.add(new Kierowca(uzytkownikDoDodania));
-        System.out.println("Kierowca dodany!\n");
+    // dodajemy kierowce do systemu - od razu staje sie on kierowca
+    public void dodajKierowce(KierowcaUkarany kierowcaDoDodania) {
+        // do naszej zmiennej klasowej, czyli LISTY dodajemy kierowce
+        this.listaKierowcow.add(kierowcaDoDodania);
+        System.out.println("KierowcaUkarany dodany!\n");
     }
 
     // dodajemy policjanta do systemu
@@ -65,20 +65,20 @@ public class SystemEwidencji {
         }
     }
 
-    // metoda typu Kierowca, ktora zwraca nam kierowce do ktorego pasuje podany numer pesel,
+    // metoda typu KierowcaUkarany, ktora zwraca nam kierowce do ktorego pasuje podany numer pesel,
 //    bedziemy jej uzywac do wyszukiwania kierowcy po numerze pesel
-    public Kierowca wyszukajKierowce(int pesel) {
+    public KierowcaUkarany wyszukajKierowce(int pesel) {
         System.out.println("Zaczynam wyszukiwać kierowce po peselu!\n");
         // pętla ograniczona rozmiarem listy użytkowników
         for (int i = 0; i < this.listaKierowcow.size(); i++) {
             // z listy kierowców pobieramy metodą "get" użytkownika, który ma indeks "i" i przypisujemy do zmiennej
-            // pasujacyUzytkownikDoPeselu
-            Kierowca pasujacyKierowcaDoPeselu = this.listaKierowcow.get(i);
+            // pasujacyKierowcaDoPeselu
+            KierowcaUkarany pasujacyKierowcaDoPeselu = this.listaKierowcow.get(i);
             // wywołujemy metodę na kierowcy do sprawdzenia czy pesel się zgadza z wyszukiwanym peselem
             if (pasujacyKierowcaDoPeselu.getPesel() == pesel) {
                 // jeżeli się zgadza to:
-                // wypisujemy go
-                System.out.println("Kierowca znaleziony!\n");
+                // wypisujemy pokazOkno
+                System.out.println("KierowcaUkarany znaleziony!\n");
                 System.out.println(pasujacyKierowcaDoPeselu);
                 // i przerywam pętle po znalezieniu żeby dalej nie szukałą poprzez zwrocenie prawdy ze znalezlismy kierowca
                 return pasujacyKierowcaDoPeselu;
@@ -89,8 +89,8 @@ public class SystemEwidencji {
         return null;
     }
 
-    // argumenty metody: Policjant, Kierowca, liczba punktów
-    public void dodajPunkty(Policjant aktualnyPolicjant, Kierowca kierowcaDoUkarania, int liczbaPunktow) {
+    // argumenty metody: Policjant, KierowcaUkarany, liczba punktów
+    public void dodajPunkty(Policjant aktualnyPolicjant, KierowcaUkarany kierowcaDoUkarania, int liczbaPunktow) {
         // sprawdzamy czy policjant ma odpowiednie uprawnienia
         if (aktualnyPolicjant.sprawdzUprawnienia()) {
             // jeżeli tak to:
@@ -100,16 +100,16 @@ public class SystemEwidencji {
         }
     }
 
-    // argumenty metody: Kierowca
-    public void sprawdzPunkty(Kierowca aktualnyKierowca) {
+    // argumenty metody: KierowcaUkarany
+    public void sprawdzPunkty(KierowcaUkarany aktualnyKierowca) {
         // na użytkowniku wywołujemy metodą do pobrania ilości punktów karnych i przypisujemy do zmiennej "liczbaPunktowKierowcy"
         int liczbaPunktowKierowcy = aktualnyKierowca.getPunktyKarne();
         // wypisujemy liczbę punktów
         System.out.println("Liczba punktów: " + liczbaPunktowKierowcy + "\n");
     }
 
-    // argumenty metody: Policjant, Kierowca
-    public void kasujPunkty(Policjant karajacyPolicjant, Kierowca kierowcaDoSkasowaniaPunktow) {
+    // argumenty metody: Policjant, KierowcaUkarany
+    public void kasujPunkty(Policjant karajacyPolicjant, KierowcaUkarany kierowcaDoSkasowaniaPunktow) {
         // sprawdzamy czy policjant ma uprawnienia
         if (karajacyPolicjant.sprawdzUprawnienia()) {
             // na Kierowcy wywołujemy metodę do kasowania punktów

@@ -9,7 +9,7 @@ public class Policjant {
 
     // konstruktor, który potrzebuje zmiennej tekstowej oznaczającej identyfikator
     public Policjant(String identyfikator) {
-        // przypisujemy go do zmiennej klasowej
+        // przypisujemy pokazOkno do zmiennej klasowej
         this.identyfikator = identyfikator;
         // ustawiamy uprawnienia na prawdę, jezeli istnieje identyfikator
         if (this.identyfikator != null) {

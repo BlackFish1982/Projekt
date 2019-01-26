@@ -8,63 +8,72 @@ import javafx.util.Pair;
 import java.util.Optional;
 
 public class LoginDialog {
+//    specjalna klasa okna dialogowego
+//    obiekt okna dialogowego JAVAFX
     private Dialog<Pair<String, String>> dialog = new Dialog<>();
 
-    public Optional<Pair<String, String>> go(boolean wersjaSystemuDlaPolicjanta){
+//    funkcja ktora dodaje nasze elementy do okna dialogu JAVAFX
+    public Optional<Pair<String, String>> pokazOkno(boolean wersjaSystemuDlaPolicjanta){
+//        zaleznie od argumenty wypalniamy dane dla policjanta czy kierowcy
         String wersjaTekstu = "Pesel";
         if (wersjaSystemuDlaPolicjanta){
             wersjaTekstu = "Identyfikator";
         }
-        // Create the custom dialog.
-//        Dialog<Pair<String, String>> dialog = new Dialog<>();
+//        ustawiamy tytul i tekst
         dialog.setTitle("Logowanie do systemu:");
         dialog.setHeaderText("Proszę podaj dane:");
 
-// Set the icon (must be included in the project).
+//        tworzymy przyciski ktore automatycznie dadza nam event po klikniecu
+        ButtonType przyciskZaloguj = new ButtonType("Zaloguj", ButtonBar.ButtonData.OK_DONE);
+        ButtonType przyciskAnuluj = new ButtonType("Anuluj", ButtonBar.ButtonData.CANCEL_CLOSE);
 
-// Set the button types.
-        ButtonType loginButtonType = new ButtonType("Zaloguj", ButtonBar.ButtonData.OK_DONE);
-        ButtonType cancelButtonType = new ButtonType("Anuluj", ButtonBar.ButtonData.CANCEL_CLOSE);
+//        dodajemy te przyciski do okna dialogu
+        dialog.getDialogPane().getButtonTypes().addAll(przyciskZaloguj, przyciskAnuluj);
 
-        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, cancelButtonType);
-
-// Create the username and password labels and fields.
+//        tworzy uklad typu siatka
         GridPane grid = new GridPane();
+//        dodajemy jej wymiary
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 150, 10, 10));
 
-        TextField textField = new TextField();
-        textField.setPromptText("wpisz " + wersjaTekstu.toLowerCase());
-        Restrykcje.restrykcjaPoprawnosci(dialog, loginButtonType, textField);
+//        tworzymy pole tekstowe aby wpisac identyfikator lub pesel
+        TextField poleTekstoweDoWpisaniaIdentyfikacji = new TextField();
+//        wyswietlamy co ma wpisac uzytkownik
+        poleTekstoweDoWpisaniaIdentyfikacji.setPromptText("wpisz " + wersjaTekstu.toLowerCase());
+//        dodajemy restrykcje zaleznie od wersji loginu aby poprawne dane wpisywac
+        Restrykcje.restrykcjaPoprawnosci(dialog, przyciskZaloguj, poleTekstoweDoWpisaniaIdentyfikacji);
         if (!wersjaSystemuDlaPolicjanta){
-            Restrykcje.restrykcjaTypu(textField);
-            Restrykcje.restrykcjaDlugosci(textField, 9);
+            Restrykcje.restrykcjaTypu(poleTekstoweDoWpisaniaIdentyfikacji);
+            Restrykcje.restrykcjaDlugosci(poleTekstoweDoWpisaniaIdentyfikacji, 9);
         }else{
-            Restrykcje.restrykcjaDlugosci(textField, 11);
+            Restrykcje.restrykcjaDlugosci(poleTekstoweDoWpisaniaIdentyfikacji, 11);
         }
 
+//        do siatki dodajemy etykiete ktora opisuje wersje
         grid.add(new Label(wersjaTekstu + ":"), 0, 0);
-        grid.add(textField, 1, 0);
+        grid.add(poleTekstoweDoWpisaniaIdentyfikacji, 1, 0);
 
+//        ustawiamy uklad dla okna dialogu
         dialog.getDialogPane().setContent(grid);
 
 // Kopiujemy zmienna zeby mozna bylo jej uzyc w funkcji lambda
         final String wersjaTekstuLambda = wersjaTekstu;
 
-// Convert the result to a username-password-pair when the login button is clicked.
+//        robimy konwersje do pary wersjas systemu i pesel/identyfiktor po kliknieciu przycisku zalogu
         dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == loginButtonType) {
-                return new Pair<>(wersjaTekstuLambda, textField.getText());
+            if (dialogButton == przyciskZaloguj) {
+//                jezeli przycisk zaloguj tworzymy wynik jako para wartosci
+                return new Pair<>(wersjaTekstuLambda, poleTekstoweDoWpisaniaIdentyfikacji.getText());
             }
+//            jezeli przycisk anuluj zwracamy nic
             return null;
         });
 
+//        wyswietlamy okno i czekamy na wpisane dane i zatwierdzenie
         Optional<Pair<String, String>> result = dialog.showAndWait();
 
-        result.ifPresent(dane -> {
-            System.out.println(dane.getKey() + ", " + wersjaTekstuLambda + "=" + dane.getValue());
-        });
+//        zwracamy taka informacje z okna dialogu na zewnatrz
         return result;
     }
 }
