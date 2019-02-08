@@ -44,7 +44,7 @@ public class KierowcaUkarany {
 //    potrzebny jest informacja z systemu na temat weryfikacji uprawnien (policjanta)
     public void zarzadzajPunktami(int pktKarne, boolean weryfikacjaUprawnien) {
         if (weryfikacjaUprawnien == true) {
-            this.punktyKarne = pktKarne;
+            this.punktyKarne += pktKarne;
         }
     }
 
@@ -54,5 +54,12 @@ public class KierowcaUkarany {
                 + this.getPesel() + "\nPunkty: "
                 + this.punktyKarne + "\n";
         return wynik;
+    }
+
+    // metoda, która zwraca nam reprezentacje tekstową Kierowcy bez nowych linii
+    public void wyswietlKierowce() {
+        System.out.println(this.getImie() + " " + this.getNazwisko() + " "
+                + this.getPesel() + " "
+                + this.punktyKarne + " ");
     }
 }

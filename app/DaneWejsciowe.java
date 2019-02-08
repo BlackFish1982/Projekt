@@ -39,7 +39,21 @@ public class DaneWejsciowe {
         if (wyszukanyKierowca == null){
             return null;
         }else{
-            return glownySystemEwidencji.wyszukajKierowce(pesel).toString();
+            return wyszukanyKierowca.toString();
         }
+    }
+    public void wyswietlKierowcow(){
+//        wyswietlamy wszystkich kierowcow w postaci konsolowej
+        glownySystemEwidencji.wyswietlWszystkichKierowcow(true);
+    }
+
+    public void dodajKierowce(KierowcaUkarany nowyKierowca){
+//        dodajemy kierowce
+        glownySystemEwidencji.dodajKierowce(nowyKierowca);
+    }
+
+    public void zmienPunkty(Policjant policjant, int pesel, int nowePunkty){
+//        zmieniamy punkty kierowcy poprzez policjanta w systemie
+        glownySystemEwidencji.dodajPunkty(policjant, glownySystemEwidencji.wyszukajKierowce(pesel), nowePunkty);
     }
 }

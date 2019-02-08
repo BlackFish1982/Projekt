@@ -53,16 +53,21 @@ public class SystemEwidencji {
         return null;
     }
 
-    public void wyswietlWszystkichKierowcow() {
+    public void wyswietlWszystkichKierowcow(boolean kompaktoweDane) {
         // wypisujemy informacje
-        System.out.println("Lista kierowców w systemie:\n");
+//        System.out.println("Lista kierowców w systemie:\n");
 
         // pętla ograniczona rozmiarem listy kierowców
         for (int i = 0; i < this.listaKierowcow.size(); i++) {
             // z listy użytkowników pobieramy metodą "get" użytkownika, który ma indeks "i" i metodą toString zamieniamy
             // na reprezentacje tekstową do wypisania na ekran
-            System.out.println(this.listaKierowcow.get(i).toString());
+            if (!kompaktoweDane) {
+                System.out.println(this.listaKierowcow.get(i).toString());
+            }else{
+                this.listaKierowcow.get(i).wyswietlKierowce();
+            }
         }
+        System.out.println();
     }
 
     // metoda typu KierowcaUkarany, ktora zwraca nam kierowce do ktorego pasuje podany numer pesel,
@@ -79,7 +84,7 @@ public class SystemEwidencji {
                 // jeżeli się zgadza to:
                 // wypisujemy pokazOkno
                 System.out.println("KierowcaUkarany znaleziony!\n");
-                System.out.println(pasujacyKierowcaDoPeselu);
+//                System.out.println(pasujacyKierowcaDoPeselu);
                 // i przerywam pętle po znalezieniu żeby dalej nie szukałą poprzez zwrocenie prawdy ze znalezlismy kierowca
                 return pasujacyKierowcaDoPeselu;
             }
